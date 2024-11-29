@@ -25,7 +25,7 @@ const Login = () => {
     setError("");
 
     try {
-      let result = await fetch("http://localhost:5000/login", {
+      let result = await fetch("https://e-commerce-lime-alpha-39.vercel.app/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {
