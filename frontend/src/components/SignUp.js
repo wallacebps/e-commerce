@@ -26,7 +26,7 @@ const SignUp = () => {
     setError("");
 
     try {
-      let result = await fetch("https://e-commerce-lime-alpha-39.vercel.app/register", {
+      let result = await fetch("https://e-commerce-6ogd.onrender.com/register", {
         method: "POST",
         body: JSON.stringify({ name, email, password }),
         headers: {

@@ -20,7 +20,7 @@ const UpdateProduct = () => {
   const getProductDetails = async () => {
     setLoading(true);
     try {
-      let result = await fetch(`https://e-commerce-lime-alpha-39.vercel.app/${params.id}`, {
+      let result = await fetch(`https://e-commerce-6ogd.onrender.com/${params.id}`, {
         headers: {
           authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
         },
@@ -48,7 +48,7 @@ const UpdateProduct = () => {
     setSuccessMessage("");
 
     try {
-      let result = await fetch(`https://e-commerce-lime-alpha-39.vercel.app/${params.id}`, {
+      let result = await fetch(`https://e-commerce-6ogd.onrender.com/${params.id}`, {
         method: "PUT",
         body: JSON.stringify({ name, price, category, company }),
         headers: {

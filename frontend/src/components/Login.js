@@ -25,7 +25,7 @@ const Login = () => {
     setError("");
 
     try {
-      let result = await fetch("https://e-commerce-lime-alpha-39.vercel.app/login", {
+      let result = await fetch("https://e-commerce-6ogd.onrender.com/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {
