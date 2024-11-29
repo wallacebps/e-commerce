@@ -44,8 +44,8 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const { data, loading, error } = useApi(
     searchKey
-      ? `http://localhost:5000/search/${searchKey}`
-      : "http://localhost:5000/products"
+      ? `https://e-commerce-lime-alpha-39.vercel.app/search/${searchKey}`
+      : "https://e-commerce-lime-alpha-39.vercel.app/products"
   );
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const ProductList = () => {
       return;
 
     try {
-      const response = await fetch(`http://localhost:5000/product/${id}`, {
+      const response = await fetch(`https://e-commerce-lime-alpha-39.vercel.app/${id}`, {
         method: "DELETE",
         headers: {
           authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,

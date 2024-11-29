@@ -26,7 +26,7 @@ const SignUp = () => {
     setError("");
 
     try {
-      let result = await fetch("http://localhost:5000/register", {
+      let result = await fetch("https://e-commerce-lime-alpha-39.vercel.app/register", {
         method: "POST",
         body: JSON.stringify({ name, email, password }),
         headers: {
