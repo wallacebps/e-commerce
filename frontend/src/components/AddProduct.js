@@ -18,7 +18,7 @@ const AddProduct = () => {
     }
 
     try {
-      let result = await fetch(`https://e-commerce-lime-alpha-39.vercel.app/add-product`, {
+      let result = await fetch(`https://e-commerce-6ogd.onrender.com/add-product`, {
         method: "Post",
         body: JSON.stringify({ name, price, category, company }),
         headers: {
