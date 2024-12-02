@@ -63,7 +63,7 @@ const ProductList = () => {
       return;
 
     try {
-      const response = await fetch(`https://e-commerce-6ogd.onrender.com/${id}`, {
+      const response = await fetch(`https://e-commerce-6ogd.onrender.com/product/${id}`, {
         method: "DELETE",
         headers: {
           authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
