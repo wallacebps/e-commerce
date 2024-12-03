@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -96,7 +97,7 @@ const SignUp = () => {
         onClick={collectData}
         disabled={loading}
       >
-        {loading ? "Registering..." : "Sign Up"}
+        {loading ? <ClipLoader color="#ffffff" size={20} /> : "Sign Up"}
       </button>
     </div>
   );

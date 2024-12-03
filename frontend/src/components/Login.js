@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -88,7 +89,7 @@ const Login = () => {
         onClick={handleLogin}
         disabled={loading}
       >
-        {loading ? "Logging in..." : "Login"}
+        {loading ? <ClipLoader color="#ffffff" size={20} /> : "Login"}
       </button>
     </div>
   );

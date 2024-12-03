@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const UpdateProduct = () => {
   const [name, setName] = useState("");
@@ -7,6 +8,7 @@ const UpdateProduct = () => {
   const [category, setCategory] = useState("");
   const [company, setCompany] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -18,7 +20,9 @@ const UpdateProduct = () => {
   }, [params.id]);
 
   const getProductDetails = async () => {
-    setLoading(true);
+    setFetchLoading(true);
+    setError(null);
+
     try {
       let result = await fetch(`https://e-commerce-6ogd.onrender.com/product/${params.id}`, {
         headers: {
@@ -38,7 +42,7 @@ const UpdateProduct = () => {
     } catch (err) {
       setError("Failed to fetch product details. Please try again later.");
     } finally {
-      setLoading(false);
+      setFetchLoading(false);
     }
   };
 
@@ -62,9 +66,6 @@ const UpdateProduct = () => {
         setError(result.error);
       } else {
         setSuccessMessage("Product updated successfully!");
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
       }
     } catch (err) {
       setError("Failed to update product. Please try again later.");
@@ -72,6 +73,14 @@ const UpdateProduct = () => {
       setLoading(false);
     }
   };
+
+  if (fetchLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#36d7b7" size={50} />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-6 bg-gray-100 rounded-md shadow-md max-w-lg">
@@ -130,7 +139,7 @@ const UpdateProduct = () => {
         onClick={updateProduct}
         disabled={loading}
       >
-        {loading ? "Updating..." : "Update Product"}
+        {loading ? <ClipLoader color="#ffffff" size={20} /> : "Update Product"}
       </button>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -17,6 +18,10 @@ const AddProduct = () => {
       return;
     }
 
+    setError(false);
+    setLoading(true);
+    setSuccessMessage("");
+
     try {
       let result = await fetch(`https://e-commerce-6ogd.onrender.com/add-product`, {
         method: "Post",
@@ -31,13 +36,17 @@ const AddProduct = () => {
       if (result.error) {
         setError(result.error);
       } else {
-        setSuccessMessage("Product updated successfully!");
+        setSuccessMessage("Product added successfully!");
         setTimeout(() => {
-          navigate("/");
-        }, 2000);
+          setSuccessMessage("")
+        }, 5000);
+        setName("");
+        setPrice("");
+        setCategory("");
+        setCompany("");
       }
     } catch (err) {
-      setError("Failed to update product. Please try again later.");
+      setError("Failed to add product. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -91,7 +100,7 @@ const AddProduct = () => {
         onClick={handleSubmit}
         className="w-full mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
       >
-        Add Product
+        {loading ? <ClipLoader color="#ffffff" size={20} /> : "Add Product"}
       </button>
     </div>
   );

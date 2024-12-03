@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const useApi = (url, method = "GET", body = null) => {
   const [data, setData] = useState(null);
@@ -81,7 +82,11 @@ const ProductList = () => {
   };
 
   if (loading)
-    return <h1 className="text-center text-2xl text-gray-700">Loading...</h1>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#2563EB" size={50} />
+      </div>
+    );
   if (error)
     return (
       <h1 className="text-center text-2xl text-red-500">Error: {error}</h1>
