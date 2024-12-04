@@ -53,9 +53,10 @@ const UpdateProduct = () => {
     setSuccessMessage("");
 
     try {
+      const rawPrice = parseFloat(price.replace(/[^0-9]/g, "")) / 100;
       let result = await fetch(`${API_URL}/product/${params.id}`, {
         method: "PUT",
-        body: JSON.stringify({ name, price, category, company }),
+        body: JSON.stringify({ name, price: rawPrice, category, company }),
         headers: {
           "Content-Type": "Application/json",
           authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
@@ -67,6 +68,9 @@ const UpdateProduct = () => {
         setError(result.error);
       } else {
         setSuccessMessage("Product updated successfully!");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       }
     } catch (err) {
       setError("Failed to update product. Please try again later.");
@@ -74,6 +78,14 @@ const UpdateProduct = () => {
       setLoading(false);
     }
   };
+
+  const formatPrice = (value) => {
+    const numericValue = value.replace(/\D/g, "");
+    const integerPart = numericValue.slice(0, -2) || "0";
+    const decimalPart = numericValue.slice(-2).padStart(2, "0");
+
+    return `$ ${parseInt(integerPart).toLocaleString("en-US")},${decimalPart}`;
+  };  
 
   if (fetchLoading) {
     return (
@@ -113,7 +125,10 @@ const UpdateProduct = () => {
           placeholder="Enter price"
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) => {
+            const rawValue = e.target.value.replace(/\D/g, "");
+            setPrice(formatPrice(rawValue));
+          }}
         />
         <input
           type="text"
