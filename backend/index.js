@@ -45,13 +45,15 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/add-product", verifyToken, async (req, res) => {
-  let product = new Product(req.body);
+  const userId = req.user._id;
+  let product = new Product({...req.body, userId});
   let result = await product.save();
   res.send(result);
 });
 
 app.get("/products", verifyToken, async (req, res) => {
-  const products = await Product.find();
+  const userId = req.user._id;
+  const products = await Product.find({ userId });
   if (products.length > 0) {
     res.send(products);
   } else {
@@ -74,6 +76,18 @@ app.get("/product/:id", verifyToken, async (req, res) => {
 });
 
 app.put("/product/:id", verifyToken, async (req, res) => {
+  const userId = req.user._id
+
+  const product = await Product.findOne({ _id: req.params.id });
+
+  if (!product) {
+    return res.status(404).send({ result: "Product not found" });
+  }
+
+  if (product.userId.toString() !== userId.toString()) {
+    return res.status(403).send({ result: "You do not have permission to update this product" });
+  }
+
   let result = await Product.updateOne(
     { _id: req.params.id },
     { $set: req.body }
@@ -106,6 +120,7 @@ function verifyToken(req, res, next) {
       if (err) {
         res.status(401).send({result: "Token is not valid"});
       } else {
+        req.user = valid.user;
         next();
       }
     });

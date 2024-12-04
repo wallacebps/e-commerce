@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -11,7 +10,6 @@ const AddProduct = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!name || !price || !category || !company) {
@@ -24,8 +22,7 @@ const AddProduct = () => {
     setSuccessMessage("");
 
     try {
-      const rawPrice = parseFloat(price.replace(/[^0-9]/g, "")) / 100;
-
+      const rawPrice = parsePriceToNumber(price);
       let result = await fetch(`${API_URL}/add-product`, {
         method: "Post",
         body: JSON.stringify({ name, price: rawPrice, category, company }),
@@ -57,11 +54,19 @@ const AddProduct = () => {
 
   const formatPrice = (value) => {
     const numericValue = value.replace(/\D/g, "");
-    const integerPart = numericValue.slice(0, -2) || "0";
-    const decimalPart = numericValue.slice(-2).padStart(2, "0");
+  
+    const integerPart = numericValue.slice(0, -2) || "0"; 
+    const decimalPart = numericValue.slice(-2).padStart(2, "0"); 
+    
+    const formattedInteger = parseInt(integerPart, 10).toLocaleString("en-US");
+    
+    return `$ ${formattedInteger}.${decimalPart}`;
+  };
 
-    return `$ ${parseInt(integerPart).toLocaleString("en-US")},${decimalPart}`;
-  };  
+  const parsePriceToNumber = (formattedPrice) => {
+    const numericValue = formattedPrice.replace(/[^0-9]/g, "");
+    return parseFloat(numericValue) / 100;
+  };
     
   return (
     <div className="container mx-auto p-6 bg-gray-100 rounded-md shadow-md">
@@ -82,8 +87,9 @@ const AddProduct = () => {
         className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         value={price}
         onChange={(e) => {
-          const rawValue = e.target.value.replace(/\D/g, "");
-          setPrice(formatPrice(rawValue));
+          const rawValue = e.target.value;
+          const formattedValue = formatPrice(rawValue);
+          setPrice(formattedValue);
         }}
       />
       {error && !price && <span className="text-red-500 text-sm">Enter a valid price</span>}
