@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const UpdateProduct = () => {
   const [name, setName] = useState("");
@@ -24,7 +25,7 @@ const UpdateProduct = () => {
     setError(null);
 
     try {
-      let result = await fetch(`https://e-commerce-6ogd.onrender.com/product/${params.id}`, {
+      let result = await fetch(`${API_URL}/product/${params.id}`, {
         headers: {
           authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
         },
@@ -52,7 +53,7 @@ const UpdateProduct = () => {
     setSuccessMessage("");
 
     try {
-      let result = await fetch(`https://e-commerce-6ogd.onrender.com/product/${params.id}`, {
+      let result = await fetch(`${API_URL}/product/${params.id}`, {
         method: "PUT",
         body: JSON.stringify({ name, price, category, company }),
         headers: {

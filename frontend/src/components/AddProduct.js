@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -23,7 +24,7 @@ const AddProduct = () => {
     setSuccessMessage("");
 
     try {
-      let result = await fetch(`https://e-commerce-6ogd.onrender.com/add-product`, {
+      let result = await fetch(`${API_URL}/add-product`, {
         method: "Post",
         body: JSON.stringify({ name, price, category, company }),
         headers: {

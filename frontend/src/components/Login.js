@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ const Login = () => {
     setError("");
 
     try {
-      let result = await fetch("https://e-commerce-6ogd.onrender.com/login", {
+      let result = await fetch(`${API_URL}/login`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {
@@ -51,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto mt-12 p-6 bg-gray-100 rounded-md shadow-md max-w-md">
+    <div className="container mx-auto p-6 bg-gray-100 rounded-md shadow-md max-w-md">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
         Login
       </h1>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const useApi = (url, method = "GET", body = null) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   const token = JSON.parse(localStorage.getItem("token"));
 
   useEffect(() => {
@@ -44,9 +46,7 @@ const ProductList = () => {
   const [searchKey, setSearchKey] = useState("");
   const [products, setProducts] = useState([]);
   const { data, loading, error } = useApi(
-    searchKey
-      ? `https://e-commerce-6ogd.onrender.com/search/${searchKey}`
-      : "https://e-commerce-6ogd.onrender.com/products"
+    searchKey ? `${API_URL}/search/${searchKey}` : `${API_URL}/products`
   );
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const ProductList = () => {
       return;
 
     try {
-      const response = await fetch(`https://e-commerce-6ogd.onrender.com/product/${id}`, {
+      const response = await fetch(`${API_URL}/product/${id}`, {
         method: "DELETE",
         headers: {
           authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
@@ -93,7 +93,7 @@ const ProductList = () => {
     );
 
   return (
-    <div className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-lg">
+    <div className="container mx-auto mb-6 p-6 bg-gray-50 rounded-lg shadow-lg">
       <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
         Product List
       </h3>

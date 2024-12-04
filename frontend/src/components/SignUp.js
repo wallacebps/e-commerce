@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -27,7 +28,7 @@ const SignUp = () => {
     setError("");
 
     try {
-      let result = await fetch("https://e-commerce-6ogd.onrender.com/register", {
+      let result = await fetch(`${API_URL}/register`, {
         method: "POST",
         body: JSON.stringify({ name, email, password }),
         headers: {
@@ -52,7 +53,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="container mx-auto mt-12 p-6 bg-gray-100 rounded-md shadow-md max-w-md">
+    <div className="container mx-auto p-6 bg-gray-100 rounded-md shadow-md max-w-md">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
         Sign Up
       </h1>
