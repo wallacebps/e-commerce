@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Nav = () => {
-  const [menuOpen, setMenuOpen] = useState(false); // Controle do menu mobile
+  const [menuOpen, setMenuOpen] = useState(false);
   const auth = localStorage.getItem("user");
   const navigate = useNavigate();
 
@@ -14,13 +14,11 @@ const Nav = () => {
   return (
     <nav className="bg-gray-800 text-white shadow-lg">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
         <Link to="/" className="flex items-center">
           <img src="logo.png" alt="logo" className="h-10 w-10 mr-2" />
           <span className="text-xl font-bold">E-comn</span>
         </Link>
 
-        {/* Botão do Menu Hambúrguer */}
         <button
           onClick={() => setMenuOpen(true)}
           className="lg:hidden text-gray-400 hover:text-white focus:outline-none"
@@ -28,7 +26,6 @@ const Nav = () => {
           <i className="fas fa-bars text-2xl"></i>
         </button>
 
-        {/* Menu Principal - Desktop */}
         <div className="hidden lg:flex items-center space-x-6 text-sm">
           {auth ? (
             <>
@@ -70,7 +67,6 @@ const Nav = () => {
         </div>
       </div>
 
-      {/* Menu Lateral - Mobile */}
       {menuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
           <div className="fixed right-0 top-0 h-auto w-64 bg-gray-800 text-white shadow-lg z-50 pb-6">
