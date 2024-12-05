@@ -96,7 +96,10 @@ app.put("/product/:id", verifyToken, async (req, res) => {
 });
 
 app.get("/search/:key", verifyToken, async (req, res) => {
+  const userId = req.user._id;
+
   let result = await Product.find({
+    userId,
     $or: [
       {
         name: { $regex: req.params.key },
