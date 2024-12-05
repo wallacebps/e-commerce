@@ -113,20 +113,23 @@ app.put("/product/:id", verifyToken, async (req, res) => {
 app.get("/search/:key", verifyToken, async (req, res) => {
   const userId = req.user._id;
 
+  const searchKey = req.params.key.trim().toLowerCase();
+
   let result = await Product.find({
     userId,
     $or: [
       {
-        name: { $regex: req.params.key },
+        name: { $regex: searchKey, $options: 'i' },
       },
       {
-        company: { $regex: req.params.key },
+        company: { $regex: searchKey, $options: 'i' },
       },
       {
-        category: { $regex: req.params.key },
+        category: { $regex: searchKey, $options: 'i' },
       },
     ],
   });
+  
   res.send(result);
 });
 
@@ -138,7 +141,6 @@ function verifyToken(req, res, next) {
       if (err) {
         res.status(401).send({result: "Token is not valid"});
       } else {
-        console.log("Valid user:", valid);
         req.user = valid.user;
         next();
       }
