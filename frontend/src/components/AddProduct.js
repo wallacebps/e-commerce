@@ -69,7 +69,7 @@ const AddProduct = () => {
   };
     
   return (
-    <div className="container mx-auto p-6 bg-gray-100 rounded-md shadow-md">
+    <div className="container mx-auto p-6 mb-6 bg-gray-100 rounded-md shadow-md">
       <h1 className="text-2xl font-semibold text-gray-800 mb-4">Add Product</h1>
 
       <input

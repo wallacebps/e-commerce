@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const useApi = (url, method = "GET", body = null) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
   const token = JSON.parse(localStorage.getItem("token"));
 
   useEffect(() => {
@@ -108,11 +106,12 @@ const ProductList = () => {
         />
       </div>
 
-      <div className="grid grid-cols-5 font-semibold text-gray-600 border-b border-gray-300 py-2">
-        <span>S. NO.</span>
+      <div className="grid grid-cols-[0.5fr,2fr,1fr,2fr,2fr,1.5fr] font-semibold text-gray-600 border-b border-gray-300 py-2">
+        <span>ID</span>
         <span>Name</span>
         <span>Price</span>
         <span>Category</span>
+        <span>Company</span>
         <span>Actions</span>
       </div>
 
@@ -120,12 +119,13 @@ const ProductList = () => {
         products.map((item, index) => (
           <div
             key={item._id}
-            className="grid grid-cols-5 py-3 border-b border-gray-200 items-center text-gray-800"
+            className="grid grid-cols-[0.5fr,2fr,1fr,2fr,2fr,1.5fr] py-3 border-b border-gray-200 items-center text-gray-800"
           >
             <span>{index + 1}</span>
-            <span>{item.name}</span>
+            <span className="truncate">{item.name}</span>
             <span>${item.price}</span>
             <span>{item.category}</span>
+            <span className="truncate">{item.company || "N/A"}</span>
             <div className="flex space-x-2">
               <button
                 onClick={() => handleDelete(item._id)}
