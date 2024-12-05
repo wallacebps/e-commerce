@@ -121,18 +121,25 @@ const UpdateProduct = () => {
         </div>
       )}
 
-      <div className="space-y-4">
+      <form className="space-y-4">
+        <div>
+          <label className="block text-gray-700 font-medium">Name</label>
         <input
           type="text"
           placeholder="Enter name"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+          {error && !name && <span className="text-red-500 text-sm">Name is required</span>}
+        </div>
+  
+        <div>
+          <label className="block text-gray-700 font-medium">Price</label>
         <input
           type="text"
           placeholder="Enter price"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
           value={price}
           onChange={(e) => {
             const rawValue = e.target.value;
@@ -140,24 +147,36 @@ const UpdateProduct = () => {
             setPrice(formattedValue);
           }}
         />
+          {error && !price && <span className="text-red-500 text-sm">Price is required</span>}
+        </div>
+  
+        <div>
+          <label className="block text-gray-700 font-medium">Category</label>
         <input
           type="text"
           placeholder="Enter category"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
+          {error && !category && <span className="text-red-500 text-sm">Category is required</span>}
+        </div>
+  
+        <div>
+          <label className="block text-gray-700 font-medium">Company</label>
         <input
           type="text"
           placeholder="Enter company"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
           value={company}
           onChange={(e) => setCompany(e.target.value)}
         />
+          {error && !company && <span className="text-red-500 text-sm">Company is required</span>}
       </div>
 
       <button
-        className={`mt-6 w-full px-4 py-2 text-white rounded-md ${
+          type="button"
+          className={`mt-6 w-full px-4 py-2 text-white font-semibold rounded-md ${
           loading
             ? "bg-gray-400 cursor-not-allowed"
             : "bg-blue-500 hover:bg-blue-600"
@@ -167,8 +186,10 @@ const UpdateProduct = () => {
       >
         {loading ? <ClipLoader color="#ffffff" size={20} /> : "Update Product"}
       </button>
+      </form>
     </div>
   );
+  
 };
 
 export default UpdateProduct;

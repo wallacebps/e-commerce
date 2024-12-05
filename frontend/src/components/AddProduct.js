@@ -24,7 +24,7 @@ const AddProduct = () => {
     try {
       const rawPrice = parsePriceToNumber(price);
       let result = await fetch(`${API_URL}/add-product`, {
-        method: "Post",
+        method: "POST",
         body: JSON.stringify({ name, price: rawPrice, category, company }),
         headers: {
           "Content-Type": "Application/json",
@@ -37,9 +37,7 @@ const AddProduct = () => {
         setError(result.error);
       } else {
         setSuccessMessage("Product added successfully!");
-        setTimeout(() => {
-          setSuccessMessage("")
-        }, 5000);
+        setTimeout(() => setSuccessMessage(""), 5000);
         setName("");
         setPrice("");
         setCategory("");
@@ -54,74 +52,81 @@ const AddProduct = () => {
 
   const formatPrice = (value) => {
     const numericValue = value.replace(/\D/g, "");
-  
-    const integerPart = numericValue.slice(0, -2) || "0"; 
-    const decimalPart = numericValue.slice(-2).padStart(2, "0"); 
-    
-    const formattedInteger = parseInt(integerPart, 10).toLocaleString("en-US");
-    
-    return `$ ${formattedInteger}.${decimalPart}`;
+    const integerPart = numericValue.slice(0, -2) || "0";
+    const decimalPart = numericValue.slice(-2).padStart(2, "0");
+    return `$ ${parseInt(integerPart, 10).toLocaleString("en-US")}.${decimalPart}`;
   };
 
   const parsePriceToNumber = (formattedPrice) => {
     const numericValue = formattedPrice.replace(/[^0-9]/g, "");
     return parseFloat(numericValue) / 100;
   };
-    
+
   return (
-    <div className="container mx-auto p-6 mb-6 bg-gray-100 rounded-md shadow-md">
+    <div className="container mx-auto p-6 mb-6 bg-gray-100 rounded-md shadow-md max-w-lg">
       <h1 className="text-2xl font-semibold text-gray-800 mb-4">Add Product</h1>
 
-      <input
-        type="text"
-        placeholder="Enter name"
-        className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      {error && !name && <span className="text-red-500 text-sm">Enter a valid name</span>}
+      <form className="space-y-4">
+        <div>
+          <label className="block text-gray-700 font-medium">Name</label>
+          <input
+            type="text"
+            placeholder="Enter name"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {error && !name && <span className="text-red-500 text-sm">Name is required</span>}
+        </div>
 
-      <input
-        type="text"
-        placeholder="Enter price"
-        className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        value={price}
-        onChange={(e) => {
-          const rawValue = e.target.value;
-          const formattedValue = formatPrice(rawValue);
-          setPrice(formattedValue);
-        }}
-      />
-      {error && !price && <span className="text-red-500 text-sm">Enter a valid price</span>}
+        <div>
+          <label className="block text-gray-700 font-medium">Price</label>
+          <input
+            type="text"
+            placeholder="Enter price"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
+            value={price}
+            onChange={(e) => setPrice(formatPrice(e.target.value))}
+          />
+          {error && !price && <span className="text-red-500 text-sm">Price is required</span>}
+        </div>
 
-      <input
-        type="text"
-        placeholder="Enter category"
-        className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      {error && !category && <span className="text-red-500 text-sm">Enter a valid category</span>}
+        <div>
+          <label className="block text-gray-700 font-medium">Category</label>
+          <input
+            type="text"
+            placeholder="Enter category"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+          {error && !category && <span className="text-red-500 text-sm">Category is required</span>}
+        </div>
 
-      <input
-        type="text"
-        placeholder="Enter company"
-        className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        value={company}
-        onChange={(e) => setCompany(e.target.value)}
-      />
-      {error && !company && <span className="text-red-500 text-sm">Enter a valid company</span>}
+        <div>
+          <label className="block text-gray-700 font-medium">Company</label>
+          <input
+            type="text"
+            placeholder="Enter company"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
+          {error && !company && <span className="text-red-500 text-sm">Company is required</span>}
+        </div>
 
-      {successMessage && (
-        <span className="text-green-500 text-sm">{successMessage}</span>
-      )}
+        {successMessage && <p className="text-green-500">{successMessage}</p>}
 
-      <button
-        onClick={handleSubmit}
-        className="w-full mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
-      >
-        {loading ? <ClipLoader color="#ffffff" size={20} /> : "Add Product"}
-      </button>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className={`w-full px-4 py-2 text-white font-semibold rounded-md ${
+            loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+          }`}
+        >
+          {loading ? <ClipLoader color="#fff" size={20} /> : "Add Product"}
+        </button>
+      </form>
     </div>
   );
 };
