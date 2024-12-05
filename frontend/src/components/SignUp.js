@@ -13,6 +13,7 @@ const SignUp = () => {
 
   useEffect(() => {
     const auth = localStorage.getItem("user");
+    console.log("🚀 ~ useEffect ~ auth:", auth)
     if (auth) {
       navigate("/");
     }
@@ -53,7 +54,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-gray-100 rounded-md shadow-md max-w-md">
+    <div className="container mx-auto p-6 mb-6 bg-gray-100 rounded-md shadow-md max-w-md">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
         Sign Up
       </h1>

@@ -18,12 +18,12 @@ app.post("/register", async (req, res) => {
   result = result.toObject();
   delete result.password;
 
-  Jwt.sign({ result }, jwtKey, { expiresIn: "2h" }, (err, token) => {
+  Jwt.sign({ user: result }, jwtKey, { expiresIn: "2h" }, (err, token) => {
     if (err) {
       res.send({ result: "Something went wrong. Please try again later." });
     }
     res.send({ result, auth: token });
-  });
+  });  
 });
 
 app.post("/login", async (req, res) => {
@@ -138,6 +138,7 @@ function verifyToken(req, res, next) {
       if (err) {
         res.status(401).send({result: "Token is not valid"});
       } else {
+        console.log("Valid user:", valid);
         req.user = valid.user;
         next();
       }
