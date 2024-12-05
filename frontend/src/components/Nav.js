@@ -16,7 +16,7 @@ const Nav = () => {
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img src="logo.png" alt="logo" className="h-10 w-10 mr-2" />
-          <span className="text-xl font-bold">E-comn</span>
+          <span className="text-xl font-bold">E-comm</span>
         </Link>
 
         <button

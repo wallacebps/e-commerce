@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between">
         <div className="text-center lg:text-left">
           <h3 className="text-sm font-semibold text-white">
-            E-comn Dashboard
+            E-commerce Dashboard
           </h3>
           <p className="text-xs mt-1">
             © {new Date().getFullYear()} All Rights Reserved.
