@@ -46,6 +46,16 @@ app.post("/login", async (req, res) => {
 
 app.post("/add-product", verifyToken, async (req, res) => {
   const userId = req.user._id;
+  const { name, price, category, company } = req.body;
+
+  if (!name || !price || !category || !company) {
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+  }
+
+  if (typeof price !== 'number' || isNaN(price) || price <= 0) {
+    return res.status(400).json({ error: 'O preço deve ser um número válido e maior que zero' });
+  }
+
   let product = new Product({...req.body, userId});
   let result = await product.save();
   res.send(result);
@@ -76,8 +86,7 @@ app.get("/product/:id", verifyToken, async (req, res) => {
 });
 
 app.put("/product/:id", verifyToken, async (req, res) => {
-  const userId = req.user._id
-
+  const userId = req.user._id;
   const product = await Product.findOne({ _id: req.params.id });
 
   if (!product) {
@@ -88,9 +97,15 @@ app.put("/product/:id", verifyToken, async (req, res) => {
     return res.status(403).send({ result: "You do not have permission to update this product" });
   }
 
+  const updatedData = { ...req.body };
+
+  if (updatedData.price && (typeof updatedData.price !== 'number' || isNaN(updatedData.price))) {
+    return res.status(400).json({ error: 'O preço deve ser um número válido' });
+  }
+
   let result = await Product.updateOne(
     { _id: req.params.id },
-    { $set: req.body }
+    { $set: updatedData }
   );
   res.send(result);
 });

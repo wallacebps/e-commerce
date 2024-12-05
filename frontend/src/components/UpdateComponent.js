@@ -53,7 +53,13 @@ const UpdateProduct = () => {
     setSuccessMessage("");
 
     try {
-      const rawPrice = parsePriceToNumber(price);
+      const rawPrice =  parsePriceToNumber(price)
+
+      if (isNaN(rawPrice)) {
+        setError("Invalid price.");
+        return;
+      }
+
       let result = await fetch(`${API_URL}/product/${params.id}`, {
         method: "PUT",
         body: JSON.stringify({ name, price: rawPrice, category, company }),
@@ -81,18 +87,20 @@ const UpdateProduct = () => {
 
   const formatPrice = (value) => {
     const numericValue = value.replace(/\D/g, "");
-  
-    const integerPart = numericValue.slice(0, -2) || "0"; 
-    const decimalPart = numericValue.slice(-2).padStart(2, "0"); 
-    
+
+    const integerPart = numericValue.slice(0, -2) || "0";
+    const decimalPart = numericValue.slice(-2).padStart(2, "0");
+
     const formattedInteger = parseInt(integerPart, 10).toLocaleString("en-US");
-    
+
     return `$ ${formattedInteger}.${decimalPart}`;
   };
-  
-  
+
   const parsePriceToNumber = (formattedPrice) => {
-    const numericValue = formattedPrice.replace(/[^0-9]/g, "");
+    if (!formattedPrice) {
+      return 0;
+    }
+    const numericValue = formattedPrice.toString().replace(/[^0-9]/g, "");
     return parseFloat(numericValue) / 100;
   };
 
@@ -124,72 +132,83 @@ const UpdateProduct = () => {
       <form className="space-y-4">
         <div>
           <label className="block text-gray-700 font-medium">Name</label>
-        <input
-          type="text"
-          placeholder="Enter name"
+          <input
+            type="text"
+            placeholder="Enter name"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-          {error && !name && <span className="text-red-500 text-sm">Name is required</span>}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {error && !name && (
+            <span className="text-red-500 text-sm">Name is required</span>
+          )}
         </div>
-  
+
         <div>
           <label className="block text-gray-700 font-medium">Price</label>
-        <input
-          type="text"
-          placeholder="Enter price"
+          <input
+            type="text"
+            placeholder="Enter price"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
-          value={price}
-          onChange={(e) => {
-            const rawValue = e.target.value;
-            const formattedValue = formatPrice(rawValue);
-            setPrice(formattedValue);
-          }}
-        />
-          {error && !price && <span className="text-red-500 text-sm">Price is required</span>}
+            value={price}
+            onChange={(e) => {
+              const rawValue = e.target.value;
+              const formattedValue = formatPrice(rawValue);
+              setPrice(formattedValue);
+            }}
+          />
+          {error && !price && (
+            <span className="text-red-500 text-sm">Price is required</span>
+          )}
         </div>
-  
+
         <div>
           <label className="block text-gray-700 font-medium">Category</label>
-        <input
-          type="text"
-          placeholder="Enter category"
+          <input
+            type="text"
+            placeholder="Enter category"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
-          {error && !category && <span className="text-red-500 text-sm">Category is required</span>}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+          {error && !category && (
+            <span className="text-red-500 text-sm">Category is required</span>
+          )}
         </div>
-  
+
         <div>
           <label className="block text-gray-700 font-medium">Company</label>
-        <input
-          type="text"
-          placeholder="Enter company"
+          <input
+            type="text"
+            placeholder="Enter company"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-400"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-        />
-          {error && !company && <span className="text-red-500 text-sm">Company is required</span>}
-      </div>
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
+          {error && !company && (
+            <span className="text-red-500 text-sm">Company is required</span>
+          )}
+        </div>
 
-      <button
+        <button
           type="button"
           className={`mt-6 w-full px-4 py-2 text-white font-semibold rounded-md ${
-          loading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-600"
-        }`}
-        onClick={updateProduct}
-        disabled={loading}
-      >
-        {loading ? <ClipLoader color="#ffffff" size={20} /> : "Update Product"}
-      </button>
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
+          onClick={updateProduct}
+          disabled={loading}
+        >
+          {loading ? (
+            <ClipLoader color="#ffffff" size={20} />
+          ) : (
+            "Update Product"
+          )}
+        </button>
       </form>
     </div>
   );
-  
 };
 
 export default UpdateProduct;
